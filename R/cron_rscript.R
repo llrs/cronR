@@ -51,9 +51,7 @@ cron_rscript <- function(rscript,
   }
   # Check to see if rscript includes absolute path to the file, if it does not, then prepend the
   # working directory to the base file name.
-  if(basename(rscript) == rscript){
-    rscript <- file.path(getwd(), rscript)
-  }
+  rscript <- normalizePath(rscript)
   # Generate command based on specified type and log_append options
   if(type == "default"){
     if(log_append){
@@ -107,7 +105,7 @@ cron_rscript <- function(rscript,
   # if workdir is set, then prepend the command to change the directory to the specified working
   # directory
   if(!is.null(workdir)){
-    cmd <- sprintf("%s %s %s %s",  "cd", shQuote(workdir), "&&", cmd)
+    cmd <- sprintf("%s %s %s %s",  "cd", shQuote(normalizePath(workdir)), "&&", cmd)
   }
   cmd
 }
